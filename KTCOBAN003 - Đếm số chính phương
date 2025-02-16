@@ -1,0 +1,23 @@
+import java.util.Scanner;
+public class Main{
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int t=sc.nextInt();
+        while(t-->0){
+            long a = sc.nextLong();
+            long b = sc.nextLong();
+            if(a>b) {
+                long tmp=a;
+                a=b;
+                b=tmp;
+            }
+            long start = (long)Math.sqrt(a);
+            if(start*start!=a) start += 1;
+            long end = (long)Math.sqrt(b);
+            long count=0;
+            for(long i=start; i<=end; i++){
+                count++;
+            }System.out.println(count);
+        }
+    }
+}
