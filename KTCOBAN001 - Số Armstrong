@@ -1,0 +1,32 @@
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while (t-- > 0) {
+            int n = sc.nextInt();
+            if (n == arm(n))
+                System.out.println("1");
+            else System.out.println("0");
+        }
+    }
+
+    public static int arm(int n) {
+        int m = 0;
+        int count = 0;
+        int sum = 0;
+        m = n; 
+        //đếm số chữ số
+        while (n != 0) {
+            n /= 10;
+            count++;
+        }
+        //tính tổng để kiểm tra số hoàn hảo
+        while (m != 0) {
+            int last = m % 10;
+            sum += Math.pow(last, count);
+            m /= 10;
+        }
+        return sum;
+    }
+}
