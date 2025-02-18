@@ -1,0 +1,19 @@
+import java.util.Scanner;
+
+public class Main{
+    public static void main(String[] args) {
+    Scanner sc=new Scanner(System.in);
+    int t=sc.nextInt();
+    while(t-->0){
+        int n= sc.nextInt();
+        if(isLeapyear(n)){
+            System.out.println(n + " : Leap-year");
+        }else{
+            System.out.println(n + " : Non Leap-year");
+        }
+    }
+    }
+    public static boolean isLeapyear(int n){
+        return n%4==0 && n%100!=0 || n%400==0;
+    }
+}
