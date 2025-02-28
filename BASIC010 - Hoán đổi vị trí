@@ -1,0 +1,19 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int t=sc.nextInt();
+        sc.nextLine();
+        while (t-->0){
+        String n=sc.nextLine();
+        char[] digits = n.toCharArray();//tạo mảng lưu trữ các chữ số của chuỗi
+        int startIndex = (digits.length % 2 == 1) ? 1 : 0;//nếu số chữ số là lẻ, vòng lặp chạy từ chữ số thứ 2, chẵn thì chạy từ chữ số đầu tiên
+        for (int i = startIndex; i < digits.length - 1; i += 2) {
+            char temp = digits[i];
+            digits[i] = digits[i + 1];
+            digits[i + 1] = temp;
+        }
+        System.out.println(digits);
+    }
+}}
