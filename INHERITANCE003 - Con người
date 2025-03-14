@@ -1,0 +1,45 @@
+import java.util.*;
+class Person{
+    String name;
+    String address;
+    public Person(String name, String address){
+        this.name = name;
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public String getAddress(){
+        return address;
+    }
+
+}
+class Student extends Person{
+    int credits = 0;
+    String student_ID;
+    public Student(String name, String address, String student_ID) {
+        super(name, address);
+        this.student_ID=student_ID;
+    }
+    int getCredit(){
+        return credits;
+    }
+    void study(){
+        this.credits++;
+    }
+    @Override
+    public String toString(){
+        return name + " - " + address + " " + student_ID;
+    }
+
+}
+public class Main{
+    public static void main(String[] args) {
+        Student std = new Student("Ollie","6381 Hollywood Blvd. Los Angeles","90028");
+        System.out.println(std);
+        System.out.println("Study credits "+ std.getCredit());
+        std.study();
+        System.out.println("Study credits "+ std.getCredit());
+    }
+}
