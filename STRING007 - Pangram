@@ -1,0 +1,20 @@
+import java.util.*;
+public class Main{
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        sc.nextLine();
+        while(t-->0){
+            String s = sc.nextLine();
+            HashSet<Character> set = new HashSet();//HashSet la dem so lan xuat hien 1 lan duy nhat
+            for(char c:s.toCharArray()){
+                set.add(c);
+            }
+            if(set.size()==26){
+                System.out.println("true");
+            }else{
+                System.out.println("false");
+            }
+        }
+    }
+}
