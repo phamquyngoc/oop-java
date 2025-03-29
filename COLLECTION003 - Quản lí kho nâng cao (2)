@@ -1,0 +1,47 @@
+import java.util.*;
+
+class Warehouse{
+    private String product;
+    private int price;
+    private int stock;
+    private HashMap<String, Integer> map = new HashMap<>();
+
+    public void addProduct(String product, int stock){
+        map.put(product,stock);
+    }
+    public int stock(String product){
+        if(map.containsKey(product)){
+            return map.get(product);
+        }return 0;
+    }
+
+    public boolean take(String product){
+        if(map.containsKey(product)&&map.get(product)>0){
+            map.put(product,map.get(product)-1);
+            return true;
+        }else{
+            map.put(product,0); // nếu số lượng tồn kho sau khi giảm <0, đặt về bằng 0
+            return false;
+        }
+    }
+    public Set<String> products() {
+        return this.map.keySet();
+    }
+}
+public class Main{
+    public static void main(String[] args) {
+        Warehouse wh = new Warehouse();
+        wh.addProduct("milk",10);
+        wh.addProduct("coffee",6);
+        wh.addProduct("buttermilk",2);
+        wh.addProduct("yogurt", 20);
+        wh.take("buttermilk");
+        wh.take("milk");
+        wh.take("buttermilk");
+        for(String product:wh.products()){
+            if(wh.stock(product)>0){
+                System.out.println(product);
+            }
+        }
+    }
+}
