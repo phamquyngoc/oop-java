@@ -8,7 +8,9 @@ class TripleTacoBox implements TacoBox{
         return tacos;
     }
     public void eat(){
-        tacos--;
+        if(tacos > 0){
+            tacos --;
+        }
     }
 }
 class CustomTacoBox implements TacoBox{
@@ -23,7 +25,9 @@ class CustomTacoBox implements TacoBox{
 
     @Override
     public void eat() {
-        tacos--;
+        if(tacos > 0){
+            tacos--;
+        }
     }
 }
 public class Main {
