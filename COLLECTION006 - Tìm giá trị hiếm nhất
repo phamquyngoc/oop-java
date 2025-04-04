@@ -1,0 +1,35 @@
+import java.util.*;
+public class Main{
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        sc.nextLine();
+        while(t-->0){
+            String[] s = sc.nextLine().split(" ");
+            Map<String,Integer> map = new HashMap<>();
+            for(int i = 0;i<s.length;i+=2){
+                map.put(s[i], Integer.parseInt(s[i+1]));
+            }
+            System.out.println(rarest(map));
+        }
+    }
+public static int rarest(Map<String, Integer> map){
+    int[] a = new int[1000]; //mảng lưu số lần xuất hiện của số nguyên trong map
+    for(int value:map.values()){//duyệt các giá trị nguyên trong map
+        a[value]++;//tăng số lần xuất hiện của các số lên 1 rồi lưu vào mảng
+    }
+    int tmp = map.size();//gán bằng size của map vì size của map hiện tại là số lần xuất hiện lớn nhất
+    int ans = 1000;
+    for(int value:map.values()){
+        tmp = Math.min(tmp, a[value]);//giảm dần số lần xuất hiện của các số, đến khi tìm ra số có lần xuất hiện ít nhất
+    }
+    for(int value:map.values()){
+        if(tmp == a[value]){
+            ans = Math.min(ans, value);//so sánh 2 số có số lần xuất hiện bằng nhau, chọn ra số bé hơn
+        }
+    } return ans;
+}}
+
+
+
+
