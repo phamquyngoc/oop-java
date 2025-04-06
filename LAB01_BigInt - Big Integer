@@ -1,0 +1,28 @@
+import java.math.BigInteger;
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while (t-- > 0) {
+            String a1 = sc.next();
+            char c = sc.next().charAt(0);
+            String a2 = sc.next();
+            BigInteger a = new BigInteger(a1);//chuyển chuỗi thành số nguyên
+            BigInteger b = new BigInteger(a2);
+            switch (c) {
+                case '+':
+                    System.out.println(a.add(b));
+                    break;
+                case '-':
+                    System.out.println(a.subtract(b));
+                    break;
+                case '*':
+                    System.out.println(a.multiply(b));
+                    break;
+                default:
+                    System.out.println(a.divide(b));
+            }
+        }
+    }
+}
