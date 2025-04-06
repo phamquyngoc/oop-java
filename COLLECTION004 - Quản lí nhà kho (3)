@@ -1,0 +1,127 @@
+import java.util.*;
+class Item{
+    private String product;
+    private int quantity;
+    private int unitPrice;
+    private int originalQuantity;
+
+    public Item(String product, int quantity, int unitPrice) {
+        this.product = product;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
+
+    public Item(String product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+    }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public int getUnitPrice() {
+        return unitPrice;
+    }
+
+    public int getOriginalQuantity() {
+        return originalQuantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    public int TotalPrice(){
+        return quantity * unitPrice;
+    }
+    public void printItemInfo(){
+        System.out.println("Product: "+product+" has quantity "+quantity+" with price: "+TotalPrice());
+    }
+}
+class Warehouse {
+    Map<String, Item> items;
+
+    public Warehouse() {
+        items = new HashMap<>();
+    }
+
+    public void importProduct(Item item) {
+        if (items.containsKey(item.getProduct())) {
+            Item currentQuantity = items.get(item.getProduct());//khai báo số lượng sản phẩm đã tồn tại trong kho
+            currentQuantity.setQuantity(currentQuantity.getQuantity() + item.getQuantity());//nếu sản phẩm đã tồn tại trong kho, lấy số lượng sp ban đầu + số lượng sp mới thêm vào
+        } else {
+            items.put(item.getProduct(), item);
+        }
+    }
+
+    public void removeProduct(String product, int quantity) {
+        if (items.containsKey(product)) {//chỉ xử lý sp đã có trong kho
+            Item currentQuantity = items.get(product);//khai báo số lượng sp còn lại trong kho
+            currentQuantity.setQuantity(Math.max(0, currentQuantity.getQuantity() - quantity));//trừ đi số lượng sp đã thêm, so sánh với 0 để không bị âm
+        }
+    }
+
+    public void decreaseQuantityInWarehouseByOne() {
+        for (Item item : items.values()) {//duyệt qua toàn bộ sp trong kho
+            item.setQuantity(Math.max(0, item.getQuantity() - 1));//giảm toàn bộ số lượng của các sp trong kho đi 1
+        }
+    }
+
+    public void takeFromItemToWarehouse(List<Item> itemsToCheck, String product, int quantity) {
+        for (Item item : itemsToCheck) {
+            if (item.getProduct().equals(product)) {
+                int available = item.getQuantity();
+                int toAdd = Math.min(quantity, available);
+                // Nếu sản phẩm tồn tại trong kho, cộng số lượng vào kho
+                if (items.containsKey(product)) {
+                    Item currentItem = items.get(product);
+                    currentItem.setQuantity(currentItem.getQuantity() + toAdd);
+                } else {
+                    // Nếu sản phẩm chưa có trong kho, thêm mới vào kho
+                    items.put(product, new Item(product, toAdd, item.getUnitPrice()));
+                }
+                return;
+            }
+        }
+    }
+
+    public void printStock() {
+        // Duyệt qua từng entry (sản phẩm) trong warehouseStock
+        for (Map.Entry<String, Item> entry : items.entrySet()) {
+            // Lấy thông tin sản phẩm từ entry
+            String productName = entry.getKey();  // Tên sản phẩm
+            Item item = entry.getValue();          // Sản phẩm tương ứng với tên trong kho
+            int quantity = item.getQuantity();    // Số lượng sản phẩm
+            int price = item.TotalPrice();        // Tổng giá trị của sản phẩm (quantity * unitPrice)
+
+            // In ra thông tin sản phẩm
+            System.out.println("Product: " + productName + " has quantity " + quantity + " with price: " + price);
+        }
+    }
+}
+    public class Main {
+    public static void main(String[] args) {
+        Item it1 = new Item("milk", 4, 2);
+        Item it2 = new Item("buttermilk", 10, 2);
+        it1.printItemInfo();
+        it2.printItemInfo();
+        Warehouse wh = new Warehouse();
+        wh.importProduct(it1);
+        wh.importProduct(it2);
+        wh.removeProduct("milk", 1);
+        wh.removeProduct("buttermilk", 3);
+        wh.printStock();
+        wh.decreaseQuantityInWarehouseByOne();
+        wh.printStock();
+        List<Item> itemsToCheck = new ArrayList<>();
+        itemsToCheck.add(new Item("milk", 2,2));
+        itemsToCheck.add(new Item("buttermilk", 6,2));
+        wh.takeFromItemToWarehouse(itemsToCheck, "milk",5);
+        wh.takeFromItemToWarehouse(itemsToCheck,"buttermilk",1);
+        wh.printStock();
+    }
+}
