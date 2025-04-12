@@ -1,0 +1,26 @@
+class SimpleDate{
+    private int ngay;
+    private int thang;
+    private int nam;
+
+    public SimpleDate(int ngay, int thang, int nam) {
+        this.ngay = ngay;
+        this.thang = thang;
+        this.nam = nam;
+    }
+    public boolean equals(SimpleDate s){
+        return this.ngay==s.ngay && this.thang==s.thang && this.nam == s.nam;
+    }
+
+}
+public class Main {
+    public static void main(String[] args) {
+        SimpleDate s0 = new SimpleDate(1,2,2000);
+        SimpleDate s1 = new SimpleDate(0,0,0);
+        SimpleDate s2 = new SimpleDate(5,2,2012);
+        SimpleDate s3 = new SimpleDate(1,2,2000);
+        System.out.println(s0.equals(s1));
+        System.out.println(s0.equals(s2));
+        System.out.println(s0.equals(s3));
+    }
+}
