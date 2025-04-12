@@ -1,0 +1,34 @@
+import java.util.*;
+interface Moveable{
+    public void move(int dx, int dy);
+}
+class Organism{
+    private int x;
+    private int y;
+
+    public Organism(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+    public void move(int dx, int dy){
+        x=x+dx;
+        y=y+dy;
+    }
+
+    @Override
+    public String toString() {
+        return "x:"+x+";"+"y:"+y;
+    }
+}
+public class Main{
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+         while(t-->0){
+        int x=sc.nextInt();
+        int y= sc.nextInt();
+        Organism o1 = new Organism(x,y);
+        o1.move(1,1);
+             System.out.println(o1.toString());
+    }
+}}
