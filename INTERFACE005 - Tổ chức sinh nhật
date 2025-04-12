@@ -1,0 +1,117 @@
+import java.util.*;
+interface Identifiable{
+    public String getId();
+}
+interface Birthable{
+    public String getBirthDate();
+}
+class Citizen implements Identifiable, Birthable{
+    private String name;
+    private int age;
+    private String id;
+    private String birthDate;
+
+    public Citizen(String name, int age, String id, String birthDate) {
+        super();
+        this.name = name;
+        this.age = age;
+        this.id = id;
+        this.birthDate = birthDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+}
+class Pet implements Birthable{
+    private String name;
+    private String birthDate;
+    public Pet(String name, String birthDate){
+        super();
+        this.name = name;
+        this.birthDate = birthDate;
+    }
+    public String getName(){
+        return name;
+    }
+
+    @Override
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        sc.nextLine();
+        List<Citizen> citizens = new ArrayList<Citizen>();
+        List<Pet> pets = new ArrayList<Pet>();
+        while(t-->0){
+            String q = "";// khởi tạo chuỗi nhập ngày tháng năm sinh
+            citizens.clear();
+            pets.clear();
+            while(sc.hasNext()){
+                String a = sc.next();
+                if(a.equals("Citizen")){
+                    citizens.add(new Citizen(sc.next(), Integer.parseInt(sc.next()), sc.next(), sc.next()));
+                }
+                else if(a.equals("Pet")){
+                    pets.add(new Pet(sc.next(), sc.next()));
+                }
+                else if(a.equals("End")){
+                    q = sc.next();
+                    break;
+                }
+            }
+            for(int i= 0; i<citizens.size();i++){
+                if(q.equals(citizens.get(i).getBirthDate().substring(6,10))){
+                    System.out.println(citizens.get(i).getBirthDate());//in ra ngày tháng năm sinh trùng với năm sinh sau khi ấn End
+                }
+            }
+            for(int i=0;i<pets.size();i++){
+                if(q.equals(pets.get(i).getBirthDate().substring(6,10))){
+                    System.out.println(pets.get(i).getBirthDate());
+                }
+            }
+        }
+    }
+}
