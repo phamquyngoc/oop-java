@@ -1,0 +1,36 @@
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int a = sc.nextInt();
+        if(a<0){
+            return;
+        }
+        System.out.println("Primes in the range 2 to "+a+":");
+        int dem=0;
+        for(int i=2;i<=a;i++){
+            if(nguyento(i)){
+                System.out.println(i);
+                dem++;
+            }
+        }
+        System.out.println("Total number of primes in the range: "+dem);
+        if(nguyento(dem)){
+            System.out.println("The prime count "+dem+ " is a prime number.");
+        }
+        else{
+            System.out.println("The prime count "+dem +" is not a prime number.");
+        }
+
+    }
+    public static boolean nguyento(int a){
+        int dem=0;
+        if(a<2){
+            return false;
+        }
+        for(int i=2;i<=Math.sqrt(a);i++){
+            if(a%i==0){
+                return false;
+            }
+        }return true;
+}}
