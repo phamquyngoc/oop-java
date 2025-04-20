@@ -1,0 +1,95 @@
+import java.util.*;
+abstract class Employee{
+    private String name;
+    private double salary;
+
+    public Employee(String name, double salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public Employee(String name) {
+        this.name = name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+    abstract public void getInfo();
+    abstract public double calculateSalary();
+}
+class FullTimeEmployee extends Employee{
+    private double bonus;
+
+    public FullTimeEmployee(String name, double salary, double bonus) {
+        super(name, salary);
+        this.bonus = bonus;
+    }
+    public double calculateSalary(){
+        return getSalary()+bonus;
+    }
+    public void getInfo(){
+        System.out.println("Loại: FullTime");
+        System.out.println("Họ tên: "+getName());
+        System.out.println(String.format("Lương cơ bản: %.1f",getSalary()));
+        System.out.println(String.format("Thưởng: %.1f",bonus));
+        System.out.println(String.format("=> Lương thực nhận: %.1f",calculateSalary()));
+    }
+}
+class PartTimeEmployee extends Employee{
+    private int hoursWorked;
+    private double hourlyRate;
+
+    public PartTimeEmployee(String name, int hoursWorked, double hourlyRate) {
+        super(name);
+        this.hoursWorked = hoursWorked;
+        this.hourlyRate = hourlyRate;
+    }
+    public double calculateSalary(){
+        return hourlyRate*hoursWorked;
+    }
+    public void getInfo(){
+        System.out.println("Loại: PartTime");
+        System.out.println("Họ tên: "+getName());
+        System.out.println("Số giờ làm việc: "+hoursWorked+" giờ");
+        System.out.println(String.format("Tiền công mỗi giờ: %.1f", hourlyRate));
+        System.out.println(String.format("=> Lương thực nhận: %.1f", calculateSalary()));
+    }
+
+}
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        System.out.println("--- Thông tin nhân viên ---");
+        String type1 = sc.nextLine();
+        if(type1.equals("FullTime")){
+            FullTimeEmployee a = new FullTimeEmployee(sc.nextLine(), sc.nextDouble(), sc.nextDouble());
+            a.getInfo();
+        } else if (type1.equals("PartTime")) {
+            PartTimeEmployee b = new PartTimeEmployee(sc.nextLine(), sc.nextInt(), sc.nextDouble());
+            b.getInfo();
+        }
+        System.out.println();
+        sc.nextLine();
+        String type2 = sc.nextLine();
+        if(type2.equals("FullTime")){
+            FullTimeEmployee c = new FullTimeEmployee(sc.nextLine(), sc.nextDouble(), sc.nextDouble());
+            c.getInfo();
+        } else if (type2.equals("PartTime")) {
+            PartTimeEmployee d = new PartTimeEmployee(sc.nextLine(), sc.nextInt(), sc.nextDouble());
+            d.getInfo();
+        }
+    }
+}
