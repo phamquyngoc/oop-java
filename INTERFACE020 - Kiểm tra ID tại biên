@@ -1,0 +1,75 @@
+import java.util.*;
+interface Identifiable{
+    public String getID();
+}
+class Human implements Identifiable{
+    private String name;
+    private int age;
+    private String id;
+
+    public Human(String name, int age, String id) {
+        this.name = name;
+        this.age = age;
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getID() {
+        return id;
+    }
+}
+class Robot implements Identifiable{
+    private String model;
+    private String id;
+
+    public Robot(String model, String id) {
+        this.model = model;
+        this.id = id;
+    }
+
+    public String getID() {
+        return id;
+    }
+
+    public String getModel() {
+        return model;
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        List<Identifiable> info = new ArrayList<>();//danh sách lưu thông tin của Human và Robot
+        sc.nextLine();
+        while(t-->0){
+            while(true){
+            String line = sc.nextLine();//chuỗi nhập từ bàn phím (thông tin về Robot và Human)
+            if(line.equals("End"))
+                break;
+                String[] parts = line.split("\\s+");//tách chuỗi theo nhiều khoảng trắng
+                if(parts[0].equals("Human")){
+                    String name = parts[1];
+                    int age = Integer.parseInt(parts[2]);
+                    String id = parts[3];
+                    info.add(new Human(name, age, id));
+                } else if (parts[0].equals("Robot")) {
+                    String model = parts[1];
+                    String id = parts[2];
+                    info.add(new Robot(model, id));
+
+                }}
+                String end = sc.nextLine();
+                for(Identifiable x:info){
+                    if(x.getID().endsWith(end)){
+                        System.out.println(x.getID());
+                    }
+                }
+            }
+}}
