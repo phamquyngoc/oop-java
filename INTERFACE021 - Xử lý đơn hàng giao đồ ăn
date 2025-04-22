@@ -1,0 +1,65 @@
+import java.util.*;
+interface PriceItem{
+    public double getPrice();
+}
+interface SourceableItem{
+    public String getSourceName();
+}
+class ok implements PriceItem, SourceableItem{
+    private String name;
+    private double price;
+    private String restaurantName;
+
+    public ok(String name, double price, String restaurantName) {
+        this.name = name;
+        this.price = price;
+        this.restaurantName = restaurantName;
+    }
+
+    @Override
+    public double getPrice() {
+        return price;
+    }
+
+    public String getSourceName() {
+        return "\"" + restaurantName + "\"";//tách chuỗi theo dấu ""
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+public class Main {
+    public static String[] tachchuoi(String s){
+        String[] arr  = s.split("\"");//tách chuỗi theo dấu ""
+        for(int i = 0; i<arr.length;i++){
+            arr[i] = arr[i].trim();//tách chuỗi theo dấu cách
+        }
+        return arr;
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        sc.nextLine();
+        List<ok> items = new ArrayList<>();
+        while(t-->0){
+            while(true){
+                String line = sc.nextLine();
+                if(line.equals("Checkout")) break;
+                String[] parts = tachchuoi(line);
+                 if(parts[0].equals("Dish")){
+                    String name = parts[1];
+                    double price = Double.parseDouble(parts[2]);
+                    String restaurantName = parts[3];
+                    items.add(new ok(name,  price, restaurantName ));
+                }
+
+            }String x = sc.nextLine();
+            for(ok item:items){
+                if(item.getSourceName().equals(x)){
+                    System.out.println(String.format("\"%s\" - %.2f", item.getName(), item.getPrice()));
+                }
+            }
+        }
+    }
+}
