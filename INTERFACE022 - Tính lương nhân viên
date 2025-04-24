@@ -1,0 +1,90 @@
+import java.util.*;
+interface Identifiable{
+    public String getId();
+}
+interface Payable{
+    public double CalculateMonthlyPay();
+}
+class FullTime implements Identifiable, Payable{
+    private String name;
+    private String id;
+    private double monthlySalary;
+
+    public FullTime(String name, String id, double mothlySalary) {
+        this.name = name;
+        this.id = id;
+        this.monthlySalary = mothlySalary;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+    public double CalculateMonthlyPay(){
+        return monthlySalary;
+    }
+}
+class PartTime implements Identifiable, Payable{
+    private String name;
+    private String id;
+    private double hourlyRate;
+    private int hoursWorked;
+
+    public PartTime(String name, String id, double hourlyRate, int hoursWorked) {
+        this.name = name;
+        this.id = id;
+        this.hourlyRate = hourlyRate;
+        this.hoursWorked = hoursWorked;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public double CalculateMonthlyPay(){
+        return hourlyRate*hoursWorked;
+    }
+}
+public class Main {
+    public static String[] tach(String s){
+        String[] arr = s.split("\"");
+        for(int i=0;i<arr.length;i++){
+            arr[i] = arr[i].trim();
+        }
+        return arr;
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        sc.nextLine();
+        List<Payable> calculate = new ArrayList<>();
+        while(t-->0){
+            while(true){
+                String line = sc.nextLine();
+                String[] parts = tach(line);
+                if(line.equals("Calculate")){
+                    break;
+                }
+                if(parts[0].equals("FullTime")){
+                    String name = parts[1];
+                    String[] extra = parts[2].split(" ");//thêm cái này vì hàm tach chỉ tách chuỗi theo dấu "", thêm cái này để tách chuỗi theo dấu cách
+                    String id = extra[0];
+                    double monthlySalary = Double.parseDouble(extra[1]);
+                    calculate.add(new FullTime(name, id, monthlySalary));
+                }
+                if(parts[0].equals("PartTime")){
+                    String name = parts[1];
+                    String[] extra = parts[2].split(" ");
+                    String id = extra[0];
+                    double hourlyRate = Double.parseDouble(extra[1]);
+                    int hoursWorked = Integer.parseInt(extra[2]);
+                    calculate.add(new PartTime(name, id, hourlyRate, hoursWorked));
+                }
+            }double tong = 0;
+            for(Payable x:calculate){
+                tong+=x.CalculateMonthlyPay();
+            } System.out.println(String.format("Total Monthly Payroll: %.2f",tong));
+        }
+    }
+}
