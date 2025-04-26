@@ -1,0 +1,72 @@
+import java.util.*;
+class Pair<T>{
+    private T first;
+    private T second;
+
+    public Pair(T first, T second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    public T getFirst() {
+        return first;
+    }
+
+    public T getSecond() {
+        return second;
+    }
+
+    public void setFirst(T first) {
+        this.first = first;
+    }
+
+    public void setSecond(T second) {
+        this.second = second;
+    }
+    public void swap(){
+        T temp = first;
+        first = second;
+        second = temp;
+    }
+    public void print(){
+        if(first instanceof String && second instanceof String){
+            System.out.println("'" + first + "' "+"'"+second+"'");// nếu đầu vào là kiểu String thì thêm ''
+        }
+        else{
+            System.out.println(first + " " + second);
+        }
+    }
+}
+public class Main {
+    //Kiểm tra xem chuỗi là số hay String
+    public static boolean isNumeric(String s){
+        try{
+            Integer.parseInt(s);
+            return true;//nếu chuỗi chuyển được về số thì đúng
+        }
+        catch(NumberFormatException e){
+            return false;//chuỗi là chữ mà cố gắng chuyển về số thì sẽ ra lỗi
+        }
+    }
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        sc.nextLine();
+        while(t-->0){
+            String line = sc.nextLine();
+            String[] parts = line.split("\\s+");
+            if(isNumeric(parts[0])){
+                int a = Integer.parseInt(parts[0]);
+                int b = Integer.parseInt(parts[1]);
+                Pair<Integer> p = new Pair<>(a,b);
+                p.swap();
+                p.print();
+            }
+            else{
+                Pair<String> q = new Pair<>(parts[0],parts[1]);
+                q.swap();
+                q.print();
+            }
+        }
+    }
+}
