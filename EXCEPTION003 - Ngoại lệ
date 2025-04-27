@@ -1,0 +1,56 @@
+import java.util.*;
+class UsedCarException extends Exception{
+    public UsedCarException(String VIN){
+        super("Invalid UsedCar: VIN " + VIN);
+    }
+}
+class UsedCar{
+    private String VIN, make;
+    private int year, mileage;
+    private double price;
+    public UsedCar(String VIN, String make, int year, int mileage, double price) throws UsedCarException{
+        if(VIN.length()!=4||!(make.equals("Ford")||make.equals("Toyota")||make.equals("Honda")||make.equals("Chrysler"))||year<1990||year>2014||mileage<0||price<0){
+            throw new UsedCarException(VIN);
+        }
+        this.VIN = VIN;
+        this.make = make;
+        this.year = year;
+        this.mileage = mileage;
+        this.price = price;
+    }
+    public String toString(){
+        return String.format("UsedCar{vin='%s', make='%s', year=%d, mileage=%d, price=%.1f}", VIN, make, year, mileage, price);
+    }
+}
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int t=  sc.nextInt();
+        sc.nextLine();
+        List<UsedCar> usedCars = new ArrayList<>();
+        while(t-->0){
+            String line = sc.nextLine();
+            String[] parts = line.split(",");
+            String VIN = parts[0].trim();
+            String make = parts[1].trim();
+            int year = Integer.parseInt(parts[2]);
+            int mileage = Integer.parseInt(parts[3]);
+            double price = Double.parseDouble(parts[4]);
+            try{
+                UsedCar x = new UsedCar(VIN, make, year, mileage, price);
+                usedCars.add(x);
+            }
+            catch(UsedCarException e){
+                System.out.println(e.getMessage());
+            }}
+            System.out.println("List of successfully constructed UsedCar objects:");
+            if(usedCars.isEmpty()){
+                System.out.println("No used cars");
+            }
+            else{
+            for(UsedCar i:usedCars){
+                System.out.println(i.toString());
+            }
+        }
+    }
+}
