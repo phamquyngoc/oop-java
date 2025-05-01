@@ -1,0 +1,90 @@
+import java.util.*;
+interface Mapper<T,R>{
+    public R map(T t);
+}
+class GenericFilter{
+    public static <T,R> List<R> map(List<T> input, Mapper<T,R> mapper){
+        List<R> result = new ArrayList<>();
+        for(T item:input){//duyệt qua từng phần tử của input đầu vào
+            result.add(mapper.map(item));//chuyển đổi tưừng phần từ từ T sang R, lưu vào danh sách R
+        }return result;
+}}
+class MapIntToString implements Mapper<Integer, String>{
+   public String map(Integer t){
+       return t.toString();
+   }
+
+}
+class MapStringToLength  implements Mapper<String, Integer>{
+    public Integer map(String s){
+        return s.length();
+    }
+}
+class Employee{
+    private String name;
+    private double salary;
+    public Employee(String name, double salary){
+        this.name = name;
+        this.salary = salary;
+    }
+    public String getName(){
+        return name;
+    }
+    public double getSalary(){
+        return salary;
+    }
+    public String toString(){
+        return String.format("%s:%.1f", getName(), getSalary());
+    }
+}
+class MapEmployeeToString implements Mapper<Employee, String>{
+    public String map(Employee e){
+        return e.toString();
+    }
+}
+public class Main{
+    public static <T> void printRS(List<T> list) {
+        for (T item : list) {
+            System.out.println(item);
+        }
+    }
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        sc.nextLine();
+        while(t-->0){
+            while(true){
+            String line = sc.nextLine();
+            if(line.equals("End"))
+                break;
+                String[] parts = line.split(" ");
+                    if (parts[0].equals("MapIntToString")) {
+                        int n = Integer.parseInt(parts[1]);
+                        List<Integer> numbers = new ArrayList<>();
+                        for (int i = 0; i < n; i++) {
+                            numbers.add(Integer.parseInt(parts[i + 2]));//thêm số vào list
+                        }
+                        List<String> result = GenericFilter.map(numbers, new MapIntToString());
+                        printRS(result);
+                    } else if (parts[0].equals("MapStringToLength")) {
+                        List<String> strings = new ArrayList<>();
+                        int n = Integer.parseInt(parts[1]);
+                        for (int i = 0; i < n; i++) {
+                            strings.add(parts[2 + i]);//thêm chuỗi vào list
+                        }
+                        List<Integer> result = GenericFilter.map(strings, new MapStringToLength ());
+                        printRS(result);
+                    } else if (parts[0].equals("MapEmployeeToString")) {
+                        List<Employee> employee = new ArrayList<>();
+                        int n = Integer.parseInt(parts[1]);
+                        for (int i = 0; i < n; i++) {
+                            String name = parts[2 + 2 * i];
+                            double salary = Double.parseDouble(parts[3 + 2 * i]);
+                            employee.add(new Employee(name, salary));
+                        }
+                        List<String> result = GenericFilter.map(employee, new MapEmployeeToString());
+                        printRS(result);
+                    }
+        }
+    }}
+}
