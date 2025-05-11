@@ -1,0 +1,108 @@
+import java.util.*;
+class Student{
+    private String name;
+    private int birthday;
+    private double gpa;
+    private int credit;
+    public Student(String name, int birthday, double gpa, int credit){
+        this.name = name;
+        this.birthday = birthday;
+        this.gpa = gpa;
+        this.credit = credit;
+    }
+    public String getName(){
+        return name;
+    }
+    public int getBirthday(){
+        return birthday;
+    }
+    public double getGpa(){
+        return gpa;
+    }
+    public int getCredit(){
+        return credit;
+    }
+    public String toString(){
+        return String.format("%s %d %.1f %d", name, birthday, gpa, credit);
+    }
+}
+class bygpacredit implements Comparator<Student>{
+    public int compare(Student s1, Student s2){
+        if(s1.getGpa()!=s2.getGpa()){
+            if(s1.getGpa()>s2.getGpa()){
+                return -1;
+            }
+            else{
+                return 1;
+            }
+        }
+        else{
+            if(s1.getCredit()!=s2.getCredit()){
+                if(s1.getCredit()>s2.getCredit()){
+                    return -1;
+                }
+                else{
+                    return 1;
+                }
+            }
+            else{
+                return s1.getName().compareTo(s2.getName());
+            }
+        }
+    }
+}
+class bybirthgpa implements Comparator<Student>{
+    public int compare(Student s1, Student s2){
+        if(s1.getBirthday()!=s2.getBirthday()){
+            if(s1.getBirthday()<s2.getBirthday()){
+                return -1;
+            }
+            else{
+                return 1;
+            }
+        }
+        else{
+            if(s1.getGpa()!=s2.getGpa()){
+                if(s1.getGpa()>s2.getGpa()){
+                    return -1;
+                }
+                else{
+                    return 1;
+                }
+            }
+            else{
+                return s1.getName().compareTo(s2.getName());
+            }
+        }
+    }
+}
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        List<Student> list = new ArrayList<>();
+        sc.nextLine();
+        while(t-->0){
+            String line = sc.nextLine();
+            String[] parts = line.split(" ");
+            String name = parts[0];
+            int birthday = Integer.parseInt(parts[1]);
+            double gpa = Double.parseDouble(parts[2]);
+            int credit = Integer.parseInt(parts[3]);
+            list.add(new Student(name, birthday, gpa, credit));
+        }
+        String method = sc.nextLine();
+        if(method.equals("BY_GPA_CREDIT_NAME")){
+            Collections.sort(list, new bygpacredit());
+            for(Student x:list){
+                System.out.println(x);
+            }
+        }
+        if(method.equals("BY_BIRTH_GPA_NAME")){
+            Collections.sort(list, new bybirthgpa());
+            for(Student x:list){
+                System.out.println(x);
+            }
+        }
+    }
+}
