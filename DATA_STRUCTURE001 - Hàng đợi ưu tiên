@@ -1,0 +1,77 @@
+import java.util.*;
+class Student implements Comparable<Student>{
+    private int id;
+    private String name;
+    private double cgpa;
+    public Student(String name, double cgpa, int id){
+        this.id = id;
+        this.name = name;
+        this.cgpa = cgpa;
+    }
+    public int getID(){
+        return id;
+    }
+    public String getName(){
+        return name;
+    }
+    public double getCGPA(){
+        return cgpa;
+    }
+    public int compareTo(Student other) {
+        // So sánh theo CGPA (giảm dần)
+        if (cgpa != other.cgpa) {
+            return Double.compare(other.cgpa, cgpa); // CGPA cao hơn được ưu tiên
+        }
+
+        // Nếu CGPA bằng nhau, so sánh theo tên (tăng dần)
+        if (!name.equals(other.name)) {
+            return name.compareTo(other.name);
+        }
+
+        // Nếu tên bằng nhau, so sánh theo ID (tăng dần)
+        return Integer.compare(id, other.id);
+    }
+}
+
+class Priorities{
+    public List<Student> getStudent(List<String> events){
+        PriorityQueue<Student> pq = new PriorityQueue<>();//xây dựng hàng đợi ưu tiên
+        for(String x:events){//duyệt qua từng phần tử trong chuỗi nhập từ bàn phím
+            String[] parts = x.split("\\s+");
+            if(parts[0].equals("ENTER")){
+                String name = parts[1];
+                double cgpa = Double.parseDouble(parts[2]);
+                int id = Integer.parseInt(parts[3]);
+                pq.add(new Student(name, cgpa,id));//thêm dữ liệu nhập vào hàng đợi
+            }
+            else if(parts[0].equals("SERVED")){
+                pq.poll();//phương thức lấy phần từ đầu tiên của hàng đợi ra phục vụ trc, đồng thời xóa phần từ này khỏi hàng đợi
+            }
+        }
+        List<Student> remainStudent = new ArrayList<>();// khởi tạo danh sách lưu những học sinh còn lại sau khi xóa 1 học sinh ra khỏi hàng đợi
+        while(!pq.isEmpty()){//lặp đến khi hàng đợi rỗng thì dừng
+            remainStudent.add(pq.poll());//thêm từng phần tử mà hàng đợi thải ra
+        }
+        return remainStudent;
+    }
+}
+public class Main{
+    public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int t = sc.nextInt();
+    List<String> events = new ArrayList<>();
+    sc.nextLine();
+    while(t-->0){
+        events.add(sc.nextLine());
+    }
+    Priorities p = new Priorities();
+    List<Student> students = p.getStudent(events);
+    if(students.isEmpty()){
+        System.out.println("EMPTY");
+    }
+    else{
+        for(Student x:students){
+            System.out.println(x.getName());
+        }
+    }
+}}
