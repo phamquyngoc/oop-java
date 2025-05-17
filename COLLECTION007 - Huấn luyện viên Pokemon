@@ -1,0 +1,119 @@
+import java.util.*;
+class Pokemon{
+    private String name;
+    private String element;
+    private int health;
+    public Pokemon(String name, String element, int health){
+        this.name = name;
+        this.element = element;
+        this.health = health;
+    }
+    public String getName(){
+        return name;
+    }
+    public String getElement(){
+        return element;
+    }
+    public int getHealth(){
+        return health;
+    }
+    public void reduceHealth(int amount){
+        health-=amount;//trừ 10 sức khỏe của pokemon ko khớp thuộc tính
+    }
+}
+class Trainer{
+    private String name;
+    private int numberOfBadges;
+    private List<Pokemon> pokemons;
+    public Trainer(String name){
+        this.name = name;
+        this.numberOfBadges = 0;
+        this.pokemons = new ArrayList<>();
+    }
+    public String getName(){
+        return name;
+    }
+    public int getNumberOfBadges(){
+        return numberOfBadges;
+    }
+    public void addBadges(){
+        numberOfBadges++;//cộng thêm huy hiệu cho trainer
+    }
+    public void addPokemon(Pokemon pokemon){
+        pokemons.add(pokemon);
+    }
+    public List<Pokemon> getPokemons(){
+        return pokemons;
+    }
+    public boolean hasPokemon(String element){//Kiểm tra xem trainer có pokemon khớp với thuộc tính không
+        for(Pokemon x:pokemons){
+            if(x.getElement().equals(element)){
+                return true;
+            }
+        }return false;
+    }
+    public void reducePokemon(int amount){//giảm chỉ số health nếu pokemon không khớp thuộc tính
+        Iterator<Pokemon> i = pokemons.iterator();//Iterator là một giao diện trong Java cho phép chúng ta duyệt qua từng phần tử của một collection và an toàn để xóa phần tử trong quá trình duyệt
+        while(i.hasNext()){//duyệt từng phần tử trong danh sách
+            Pokemon pokemon = i.next();//lấy phần tử (đối tượng Pokemon) tiếp theo từ danh sách
+            pokemon.reduceHealth(amount);
+            if(pokemon.getHealth()<=0){
+                i.remove();
+            }
+        }
+    }
+    public int getPokemoncount(){
+        return pokemons.size();
+    }
+}
+public class Main{
+    private static Trainer findTrainerByName(List<Trainer> trainers, String name){
+        for(Trainer x:trainers){
+            if(x.getName().equals(name)){
+                return x;
+            }
+        }return null;
+    }//hàm này để kiểm tra xem liệu tên trainer nhập vào đã có trong danh sách hay chưa, nếu chưa thì thêm mới vào danh sách, nếu có rồi thì tham chiếu đến tên cũ và thêm pokemon
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<Trainer> trainers = new ArrayList<>();
+        String line;
+        while(!(line=sc.nextLine()).equals("Tournament")){
+            String[] parts = line.split(" ");
+            String trainername = parts[0];
+            String pokemonname = parts[1];
+            String element = parts[2];
+            int health = Integer.parseInt(parts[3]);
+            Trainer trainer = findTrainerByName(trainers, trainername);
+            if(trainer==null){
+                trainer = new Trainer(trainername);
+                trainers.add(trainer);
+            }
+            Pokemon pokemon = new Pokemon(pokemonname, element, health);
+            trainer.addPokemon(pokemon);
+        }
+        while(!(line = sc.nextLine()).equals("End")){
+            String element = line;
+            for(Trainer x:trainers){
+                if(x.hasPokemon(element)){
+                    x.addBadges();
+                }
+                else{
+                    x.reducePokemon(10);
+                }
+            }
+        }
+        //sắp xếp trainer theo thứ tự badges giảm dần
+        for(int i = 0; i<trainers.size()-1;i++){
+            for(int j=0;j<trainers.size()-1-i;j++){
+                if(trainers.get(j).getNumberOfBadges()<trainers.get(j+1).getNumberOfBadges()){
+                    Trainer tmp = trainers.get(j);//truy xuất tới đối tượng i trong danh sách, gán vào tmp
+                    trainers.set(j,trainers.get(j+1));//gán đối tượng ở vị trí j vào vị trí i
+                    trainers.set(j+1, tmp);
+                }
+            }
+        }
+        for(Trainer x:trainers){
+            System.out.println(x.getName() + " " + x.getNumberOfBadges() + " " + x.getPokemoncount());
+        }
+    }}
