@@ -1,0 +1,67 @@
+import java.util.*;
+class Money{
+    private int euros;
+    private int cent;
+    public Money(int euros, int cent){
+        this.euros = euros;
+        this.cent = cent;
+    }
+    public Money plus(Money added){
+        Money m = new Money(0,0);
+        m.cent = this.cent + added.cent;
+        int du = m.cent/100;//vì 100 cent = 1 euro nên chia lấy phần nguyên để cộng phần nguyên vào phần euros
+        m.cent = m.cent%100;// để phần dư lại cho cent
+        m.euros = this.euros + added.euros + du;
+        return m;
+    }
+    public boolean lessThan(Money compared){
+        if(this.euros < compared.euros) return true;
+        if(this.euros == compared.euros && this.cent < compared.cent) return true;
+        return false;
+    }
+    public Money minus(Money minus){
+        Money m = new Money(0,0);
+        int m1 = this.euros*100 + this.cent;
+        int m2 = minus.euros*100 + minus.cent;
+        if(m1<m2){
+            m.euros = 0;
+            m.cent = 0;
+        }
+        else{
+            int ok = m1-m2;
+            m.euros = ok/100;
+            m.cent = ok%100;
+        }
+        return m;
+    }
+    public String toString(){
+        String s = String.valueOf(cent);//chuyển số thành chuỗi
+        if(s.length()==1){
+            s = "0" + cent;
+        }
+        return euros + "." + s +"e";
+    }
+}
+public class Main{
+    public static void main(String[] args){
+        Money a = new Money(10,8);
+        Money b = new Money(5,5);
+        Money c = a.plus(b);
+        System.out.println(a);
+        System.out.println(b);
+        System.out.println(c);
+        Money u = new Money(10,0);
+        Money y = new Money(3,0);
+        Money w = new Money(5,0);
+        System.out.println(u.lessThan(y));
+        System.out.println(y.lessThan(w));
+        Money m = new Money(10,0);
+        Money n = new Money(3,50);
+        Money o = m.minus(n);
+        System.out.println(m);
+        System.out.println(n);
+        System.out.println(o);
+        System.out.println(o.minus(m));
+
+    }
+}
