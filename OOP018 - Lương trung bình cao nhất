@@ -1,0 +1,136 @@
+import java.util.*;
+class Employee{
+    private String name;
+    private double salary;
+    private String department;
+    private String email;
+    private Integer age;
+    public Employee(String name, double salary, String department, String email, Integer age){
+        this.name = name;
+        this.salary = salary;
+        this.department = department;
+        this.email = email;
+        this.age = age;
+    }
+
+    public Employee(String name, double salary, String email, Integer age) {
+        this.salary = salary;
+        this.name = name;
+        this.email = email;
+        this.age = age;
+    }
+
+    public Employee(String name, double salary, String department){
+        this.name = name;
+        this.salary = salary;
+        this.department = department;
+        this.email = null;
+        this.age = null;
+    }
+    public String getName(){
+        return name;
+    }
+    public double getSalary(){
+        return salary;
+    }
+    public String getDepartment(){
+        return department;
+    }
+    public String getEmail(){
+        return email==null ? "n/a" : email;
+    }
+    public Integer getAge(){
+        return age == null ? -1 : age;
+    }
+    public String toString(){
+        return String.format("%s %.2f %s %d", getName(), getSalary(), getEmail(), getAge());
+    }
+}
+//lớp lưu trữ thông tin 1 phòng ban
+class Department{
+    private String name;
+    List<Employee> employees;
+    public Department(String name){
+        this.name = name;
+        this.employees = new ArrayList<>();
+    }
+    public String getName(){
+        return name;
+    }
+    public List<Employee> getEmployees(){
+        return employees;
+    }
+    public void addEmployees(Employee employee){
+        employees.add(employee);
+    }
+    public double getAvarageSalary(){
+        double totalSalary = 0;
+        for(Employee x:employees){
+            totalSalary += x.getSalary();
+        }
+        return totalSalary/employees.size();//lương trung bình = tổng lương/số công nhân trong phòng ban
+    }
+}
+public class Main {
+    //tìm tên phòng ban, nếu phòng ban chưa tồn tại thì thêm mới, nếu đã tồn tại thì thêm thuộc tính vào phòng ban đó
+    public static Department findName(List<Department> departments, String name) {
+        for (Department x : departments) {
+            if (x.getName().equals(name)) {
+                return x;
+            }
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        sc.nextLine();
+        List<Employee> employees = new ArrayList<>();
+        List<Department> departments = new ArrayList<>();
+        while (t-- > 0) {
+            String line = sc.nextLine();
+            String[] parts = line.split(" ");
+            String name = parts[0];
+            double salary = Double.parseDouble(parts[1]);
+            String department = parts[2];
+            String email = null;
+            Integer age = null;
+            if (parts.length > 3) {
+                if (parts[3].contains("@")) {
+                    email = parts[3];//nếu phần tử thứ 3 tồn tại dấu @ thì tức là đã nhập email, gán email vào mảng parts
+                } else {
+                    age = Integer.parseInt(parts[3]);// không thì gán age vào mảng parts tại phần tử thứ 3
+                }
+            }
+            if (parts.length > 4) {
+                if (email != null) {
+                    age = Integer.parseInt(parts[4]);// nếu email đã được nhập trước đó rồi thì phần tử tiếp theo là tuổi
+                } else {
+                    email = parts[4];
+                }
+            }
+            Department dep = findName(departments, department);
+            if(dep==null){
+                dep = new Department(department);
+                departments.add(dep);
+            }
+            Employee employee = new Employee(name, salary, email, age);
+            dep.addEmployees(employee);
+        }
+        Department highestDepartment = null;// biến lưu trữ phòng ban có lương tb cao nhất, ban đầu chưa có phòng nào nên để null
+        double highestAvarage = 0;//biến lưu lương trung bình cao nhất
+        for(Department x:departments){
+            double AvarageSalary = x.getAvarageSalary();
+            if(AvarageSalary>highestAvarage){
+                highestAvarage = AvarageSalary;//nếu lương trung bình > lương tb cao nhất tính đến thời điểm hiện tại thì gán lương tb vào biến highest đó
+                highestDepartment = x;//đánh dấu phòng ban có lương tb cao nhất
+            }
+        }
+        System.out.println("Highest Average Salary: "+highestDepartment.getName());
+        List<Employee> e = highestDepartment.getEmployees();//tạo danh sách lưu nhân viên trong phòng ban có lương tb cao nhất
+        for(Employee x:e){
+            System.out.println(x);
+        }
+    }
+}
