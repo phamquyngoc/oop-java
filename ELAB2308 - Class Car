@@ -1,0 +1,65 @@
+import java.util.*;
+abstract class Car{
+    private double price;
+    private int year;
+    public Car(double price, int year){
+        this.price = price;
+        this.year = year;
+    }
+    public double getPrice(){
+        return price;
+    }
+    public int getYear(){
+        return year;
+    }
+    public abstract double calculateSalePrice();
+}
+class ClassicCar extends Car{
+    public ClassicCar(double price, int year){
+        super(price, year);
+    }
+    public double  calculateSalePrice(){
+        return getPrice() * 1.12 + 20000000;
+    }
+}
+class SportCar extends Car{
+    public SportCar(double price, int year){
+        super(price, year);
+    }
+    double salePrice = getPrice();
+    public double calculateSalePrice(){
+        if(getYear()>2018) salePrice *= 0.8;
+        else if(getYear()>2010&&getYear()<=2018) salePrice *= 0.5;
+        else salePrice *= 0.1;
+        return salePrice;
+    }
+}
+public class Main{
+    public static Car createCar(String type, double price, int year){
+        if(type.equals("SC")){
+            return new SportCar(price, year);
+        }
+        else{
+            return new ClassicCar(price, year);
+        }
+    }
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int t=  sc.nextInt();
+        sc.nextLine();
+        double maxSalePrice = 0;
+        while(t-->0) {
+            String line = sc.nextLine();
+            String[] parts = line.split(" ");
+            String type = parts[0];
+            double price = Double.parseDouble(parts[1]);
+            int year = Integer.parseInt(parts[2]);
+            Car car = createCar(type, price, year);
+            double salePrice = car.calculateSalePrice();
+            maxSalePrice = Math.max(maxSalePrice, salePrice);
+            System.out.println(String.format("Price: %,.2f VND | Year: %d", salePrice, car.getYear()));
+        }
+            System.out.println(String.format("Most Expensive: %,.2f VND", maxSalePrice));
+
+    }
+}
