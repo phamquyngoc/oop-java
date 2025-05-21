@@ -1,0 +1,27 @@
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        sc.nextLine();
+        while(t-->0){
+            String s = sc.nextLine();
+            result(s);
+        }
+    }
+    public static void result(String s){
+        BigDecimal res = new BigDecimal(BigInteger.ZERO);//tạo biến res từ số nguyên 0
+        String[] parts = s.split(" ");
+        List<BigDecimal> list = new ArrayList<BigDecimal>();
+        for(String x:parts){
+            BigDecimal n = new BigDecimal(x);//chuyển mỗi phần tử x trong mảng thành đối tượng BigDecimal
+            list.add(n);
+        }
+        for(BigDecimal x:list){
+            res = res.add(x.remainder(BigDecimal.ONE));//lấy phần du khi chia số thập phân cho 1 (tức là lấy phần thập phân) cộng vào tổng res
+        }
+        System.out.println(res);
+    }
+}
