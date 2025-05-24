@@ -1,0 +1,157 @@
+import java.util.*;
+interface Filter<T>{
+    boolean test(T t);
+}
+interface Mapper<T,R>{
+    R map(T t);
+}
+class ListProcessor{
+    public static <T> List<T> filter(List<T> input, Filter<T> filter){
+        List<T> result = new ArrayList<>();
+        for(T x:input){
+            if(filter.test(x)){
+                result.add(x);
+            }
+        }return result;
+    }
+    public static <T, R> List<R> map(List<T> input, Mapper<T, R> mapper){
+        List<R> result = new ArrayList<>();
+        for(T x:input){
+            result.add(mapper.map(x));
+        }
+        return result;
+    }
+    public static <T> List<T> sort(List<T> input, Comparator<T> comparator){
+        List<T> result = new ArrayList<>(input);
+        result.sort(comparator);
+        return result;
+    }
+}
+class Student{
+    private String name;
+    private double gpa;
+    public Student(String name, double gpa){
+        this.name = name;
+        this.gpa = gpa;
+    }
+    public String getName(){
+        return name;
+    }
+    public double getGpa(){
+        return gpa;
+    }
+    public String toString(){
+        return name + " " + gpa;
+    }
+}
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        sc.nextLine();
+        while(t-->0){
+        String line;
+        while(!(line = sc.nextLine()).equals("End")){
+            result(line);
+        }
+        }
+    }
+    private static void result(String line) {
+        String[] parts = line.split(" ");
+        if(parts[0].equals("FilterGpaAbove")){
+            filtergpa(parts);
+        }
+        else if(parts[0].equals("MapStudentToName")){
+            maptoname(parts);
+        }
+        else if(parts[0].equals("SortStudentByGpa")){
+            sortbygpa(parts);
+        }
+        else if(parts[0].equals("FilterIntOdd")){
+            filterodd(parts);
+        }
+        else if(parts[0].equals("SortIntAsc")){
+            sortinasc(parts);
+        }
+        else if(parts[0].equals("MapIntToSquare")){
+            mapsquare(parts);
+        }
+    }
+    private static void filtergpa(String[] parts){
+        double thresold = Double.parseDouble(parts[1]);
+        int n = Integer.parseInt(parts[2]);
+        List<Student> students = new ArrayList<>();
+        for(int i = 0; i<n;i++){
+            String name = parts[i*2 + 3];
+            double gpa = Double.parseDouble(parts[2*i + 4]);
+            students.add(new Student(name,gpa));
+        }
+        List<Student> result = ListProcessor.filter(students, student -> student.getGpa()>thresold);
+        for(Student x:result){
+            System.out.println((x));
+        }
+    }
+    private static void maptoname(String[] parts){
+        int n = Integer.parseInt(parts[1]);
+        List<Student> students = new ArrayList<>();
+        for(int i = 0;i<n;i++){
+            String name = parts[2*i+2];
+            double gpa = Double.parseDouble(parts[2*i+3]);
+            students.add(new Student(name,gpa));
+        }
+        List<String> result = ListProcessor.map(students, student -> student.getName());
+        for(String x:result){
+            System.out.println(x);
+        }
+    }
+    private static void sortbygpa(String[] parts){
+        int n = Integer.parseInt(parts[1]);
+        List<Student> students = new ArrayList<>();
+        for(int i = 0;i<n;i++){
+            String name = parts[2*i+2];
+            double gpa = Double.parseDouble(parts[2*i+3]);
+            students.add(new Student(name,gpa));
+        }
+        List<Student> result = ListProcessor.sort(students, (s1,s2)-> Double.compare(s1.getGpa(), s2.getGpa()));
+        for(Student x:result){
+            System.out.println(x);
+        }
+    }
+    private static void filterodd(String[] parts){
+        int n = Integer.parseInt(parts[1]);
+        List<Integer> numbers = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            int num = Integer.parseInt(parts[i+2]);
+            numbers.add(num);
+        }
+        List<Integer> result = ListProcessor.filter(numbers, x-> x%2!=0);
+        for(Integer x:result){
+            System.out.println(x);
+        }
+    }
+    private static void sortinasc(String[] parts){
+        int n = Integer.parseInt(parts[1]);
+        List<Integer> numbers = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            int num = Integer.parseInt(parts[i+2]);
+            numbers.add(num);
+        }
+        List<Integer> result = ListProcessor.sort(numbers, (x1,x2)-> Integer.compare(x1,x2));
+        for(Integer x:result){
+            System.out.println(x);
+        }
+    }
+    private static void mapsquare(String[] parts){
+        int n = Integer.parseInt(parts[1]);
+        List<Integer> numbers = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            int num = Integer.parseInt(parts[i+2]);
+            numbers.add(num);
+        }
+        List<Integer> result = ListProcessor.map(numbers, x->x*x);
+        for(Integer x:result){
+            System.out.println(x);
+        }
+    }
+}
+
