@@ -68,7 +68,7 @@ class Warehouse {
         }
     }
 
-   public void decreaseQuantityInWarehouseByOne(){
+    public void decreaseQuantityInWarehouseByOne(){
         for(Item item:items.values()){
             if(item.getQuantity()>0){
                 item.setQuantity(item.getQuantity()-1);
@@ -93,12 +93,21 @@ class Warehouse {
         }
     }
 
-     public void printWarehouseInfo(){
-        for(Item item:items.values()){
-            item.printItemInfo();
+    public void printStock() {
+        // Duyệt qua từng entry (sản phẩm) trong warehouseStock
+        for (Map.Entry<String, Item> entry : items.entrySet()) {
+            // Lấy thông tin sản phẩm từ entry
+            String productName = entry.getKey();  // Tên sản phẩm
+            Item item = entry.getValue();          // Sản phẩm tương ứng với tên trong kho
+            int quantity = item.getQuantity();    // Số lượng sản phẩm
+            int price = item.TotalPrice();        // Tổng giá trị của sản phẩm (quantity * unitPrice)
+
+            // In ra thông tin sản phẩm
+            System.out.println("Product: " + productName + " has quantity " + quantity + " with price: " + price);
         }
-    }}
-    public class Main {
+    }
+}
+public class Main {
     public static void main(String[] args) {
         Item it1 = new Item("milk", 4, 2);
         Item it2 = new Item("buttermilk", 10, 2);
